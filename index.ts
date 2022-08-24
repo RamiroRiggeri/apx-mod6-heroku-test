@@ -3,6 +3,16 @@ import * as express from "express";
 const app = express();
 const port = process.env.PORT || 3000;
 
+console.log(process.env.FULL_NAME); //después de declararlo en Bash ya aparece
+console.log(process.env.NODE_ENV);
+console.log(process.env.DB_HOST);
+
+app.get("/env", (req, res) => {
+  res.json({
+    environment: process.env.NODE_ENV,
+  });
+});
+
 app.get("/hola", (req, res) => {
   res.json({
     message: "Hola ke ase don omar",
@@ -59,4 +69,33 @@ Uso el buscador de Hku para encontrar el repo y le doy "conectar"
 Enable automatic deploys
 Ahí se activa el deploy cada vez que hago un cambio o está el botón de hacer el deploy manual.
 Una vez que está todo listo, sólo desde VSCode, haciendo cambios y commiteandolos y pusheandolos, se actualiza la URL final de Heroku
+
+
+Para usar dentro de Heroku la variable de entorno, puedo declararla en mi terminal 
+para simularla.
+
+Dentro de la terminal de Bash puedo declarar variables de entorno usando el comando "export"
+
+export VAR_NAME=String
+
+Puedo probar si se declaró bien usando el comando "echo $VAR_NAME"
+
+Se puede declarar así pero se hace de otra manera:
+con la variable NODE_ENV que lo que hace es tener un valor de "production" o "development"
+entonces con eso podemos setear cosas para la versión de desarrollo y la versión final
+
+Se usa la librería "dotenv"
+Se importa haciendo 'import "dotenv/config" ' y además en la carpeta del proyecto, hay que
+crear un archivo ".env" (así como está, empieza en punto)
+y definir ahí:
+NODE_ENV=development
+DB_HOST=http://db.com
+
+Luego la manera de utilizarlo es hacer una variable [dev = process.env.NODE_ENV == "development"]
+y ya puedo hacer cosas diciendo if(dev){ tal y tal cosas }
+
+Si lo dejamos como está, Heroku va a leer el archivo .env, cosa que no quiero que ocurra
+entonces hay que crear un archivo "dev.ts" que haga el import de la librería y del index principal
+(nodemon tendría que tener este valor: ["dev": "nodemon --watch './index.ts' --exec 'ts-node dev.ts'",])
+
 */
