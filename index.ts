@@ -7,6 +7,12 @@ console.log(process.env.FULL_NAME); //después de declararlo en Bash ya aparece
 console.log(process.env.NODE_ENV);
 console.log(process.env.DB_HOST);
 
+app.get("/db-env", (req, res) => {
+  res.json({
+    "db-env": process.env.DB_HOST,
+  });
+});
+
 app.get("/env", (req, res) => {
   res.json({
     environment: process.env.NODE_ENV,
@@ -97,5 +103,9 @@ y ya puedo hacer cosas diciendo if(dev){ tal y tal cosas }
 Si lo dejamos como está, Heroku va a leer el archivo .env, cosa que no quiero que ocurra
 entonces hay que crear un archivo "dev.ts" que haga el import de la librería y del index principal
 (nodemon tendría que tener este valor: ["dev": "nodemon --watch './index.ts' --exec 'ts-node dev.ts'",])
+
+Para poner nuestras propias variables de entorno, como DB_HOST, DB_USER, DB_PASSWORD
+hay que ir en Hku al proyecto -> settings -> Reveal config vars
+y ahí ingresar Key y value
 
 */
